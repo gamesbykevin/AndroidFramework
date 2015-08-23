@@ -1,4 +1,4 @@
-package com.gamesbykevin.androidframework;
+package com.gamesbykevin.androidframework.base;
 
 import android.graphics.Bitmap;
 
