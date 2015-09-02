@@ -1,12 +1,14 @@
-package com.gamesbykevin.androidframework.base;
+package com.gamesbykevin.androidframework.anim;
 
 import android.graphics.Bitmap;
+
+import com.gamesbykevin.androidframework.resources.Disposable;
 
 /**
  * This class represents an animation
  * @author ABRAHAM
  */
-public class Animation 
+public class Animation implements Disposable
 {
     /**
      * The number of nanoseconds per millisecond
@@ -79,14 +81,23 @@ public class Animation
                 index++;
                 
                 //if we have reached the end, exit loop
-                if (index == this.frames.length)
+                if (index == getFrames().length)
                     break;
             }
             
             //if we have reached the end, exit loop
-            if (index == this.frames.length)
+            if (index == getFrames().length)
                 break;
         }
+    }
+    
+    /**
+     * Get the list of images in this animations
+     * @return Get all the images in this animation
+     */
+    private Bitmap[] getFrames()
+    {
+        return this.frames;
     }
     
     /**
@@ -108,7 +119,7 @@ public class Animation
         this.frameIndex = frameIndex;
         
         //make sure the frame index remains in range
-        if (getFrameIndex() < 0 || getFrameIndex() >= frames.length)
+        if (getFrameIndex() < 0 || getFrameIndex() >= getFrames().length)
             setFrameIndex(FRAME_INDEX_START);
     }
     
@@ -172,7 +183,7 @@ public class Animation
             assignTime();
             
             //if at the end of the animation, reset to the start
-            if (nextFrameIndex >= frames.length)
+            if (nextFrameIndex >= getFrames().length)
                 setFrameIndex(FRAME_INDEX_START);
         }
     }
@@ -183,6 +194,24 @@ public class Animation
      */
     public Bitmap getImage()
     {
-        return this.frames[this.getFrameIndex()];
+        return getFrames()[this.getFrameIndex()];
+    }
+    
+    @Override
+    public void dispose()
+    {
+        if (getFrames() != null)
+        {
+            for (int index = 0; index < getFrames().length; index++)
+            {
+                if (getFrames()[index] != null)
+                {
+                    getFrames()[index].recycle();
+                    getFrames()[index] = null;
+                }
+            }
+        }
+        
+        this.frames = null;
     }
 }
