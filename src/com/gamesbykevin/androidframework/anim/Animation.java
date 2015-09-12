@@ -11,6 +11,11 @@ import com.gamesbykevin.androidframework.resources.Disposable;
 public class Animation implements Disposable
 {
     /**
+     * The number of nanoseconds per second
+     */
+    public static final long NANO_SECONDS_PER_SECOND = 1000000000;
+    
+    /**
      * The number of nanoseconds per millisecond
      */
     public static final long NANO_SECONDS_PER_MILLISECOND = 1000000;
@@ -45,13 +50,38 @@ public class Animation implements Disposable
      */
     private long delay;
     
+    //does the animation loop?
+    private boolean loop = false;
+    
+    /**
+     * Create a single animation the size of our provided Bitmap
+     * @param spritesheet Image containing our animation
+     */
+    public Animation(final Bitmap spritesheet)
+    {
+        this(spritesheet, 0, 0, spritesheet.getWidth(), spritesheet.getHeight(), 1, 1, 1);
+    }
+
+    /**
+     * Create a single animation from the provided Bitmap and specifications
+     * @param spritesheet Image containing our animation
+     * @param x starting x-coordinate
+     * @param y starting y-coordinate
+     * @param width pixel width of a single frame in the animation
+     * @param height pixel height of a single frame in the animation
+     */
+    public Animation(final Bitmap spritesheet, final int x, final int y, final int width, final int height)
+    {
+        this(spritesheet, x, y, width, height, 1, 1, 1);
+    }
+    
     /**
      * Create an animation
      * @param spritesheet Image containing our animation
      * @param x starting x-coordinate
      * @param y starting y-coordinate
-     * @param width pixel width of 1 frame in the animation
-     * @param height pixel height of 1 frame in the animation
+     * @param width pixel width of a single frame in the animation
+     * @param height pixel height of a single frame in the animation
      * @param cols columns
      * @param rows rows
      * @param total total number of frames in our animation
@@ -67,12 +97,12 @@ public class Animation implements Disposable
         for (int col = 0; col < cols; col++)
         {
             //the starting x-coordinate
-            int startX = col * width;
+            int startX = x + (col * width);
             
             for (int row = 0; row < rows; row++)
             {
                 //the starting y-coordinate
-                int startY = row * height;
+                int startY = y + (row * height);
                 
                 //create the image for this specific frame
                 this.frames[index] = Bitmap.createBitmap(spritesheet, startX, startY, width, height);
@@ -89,6 +119,24 @@ public class Animation implements Disposable
             if (index == getFrames().length)
                 break;
         }
+    }
+    
+    /**
+     * Assign the animation to loop
+     * @param loop true if the animation should loop, false otherwise 
+     */
+    public void setLoop(final boolean loop)
+    {
+        this.loop = loop;
+    }
+    
+    /**
+     * Does this animation loop when finished?
+     * @return true = yes, false = no
+     */
+    public boolean hasLoop()
+    {
+        return this.loop;
     }
     
     /**
@@ -182,9 +230,20 @@ public class Animation implements Disposable
             //update our time
             assignTime();
             
-            //if at the end of the animation, reset to the start
+            //if at the end of the animation
             if (nextFrameIndex >= getFrames().length)
-                setFrameIndex(FRAME_INDEX_START);
+            {
+                if (hasLoop())
+                {
+                    //if we are looping, go back to start
+                    setFrameIndex(FRAME_INDEX_START);
+                }
+                else
+                {
+                    //if we aren't looping move back 1 frame
+                    setFrameIndex(nextFrameIndex - 1);
+                }
+            }
         }
     }
     
