@@ -40,11 +40,29 @@ public class Cell
     
     /**
      * Assign the column
+     * @param cell Cell containing the desired column
+     */
+    public void setCol(final Cell cell)
+    {
+        setCol(cell.getCol());
+    }
+    
+    /**
+     * Assign the column
      * @param col 
      */
     public void setCol(final double col)
     {
         this.col = col;
+    }
+    
+    /**
+     * Assign the row
+     * @param cell Cell containing the desired row
+     */
+    public void setRow(final Cell cell)
+    {
+        setRow(cell.getRow());
     }
     
     /**

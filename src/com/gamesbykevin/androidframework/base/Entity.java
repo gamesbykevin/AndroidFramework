@@ -7,12 +7,17 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.util.UUID;
+
 /**
  * A basic entity
  * @author ABRAHAM
  */
 public class Entity extends Cell implements Disposable
 {
+    //the unique id for this entity
+    private final UUID id;
+    
     //each entity will have an (x,y) coordinate
     private double x, y;
     
@@ -38,6 +43,38 @@ public class Entity extends Cell implements Disposable
         
         //create new sprite sheet
         this.spritesheet = new Spritesheet();
+        
+        //assign a random id
+        this.id = UUID.randomUUID();
+    }
+    
+    /**
+     * Get the id
+     * @return The unique id that identifies this entity
+     */
+    public UUID getId()
+    {
+        return this.id;
+    }
+    
+    /**
+     * Do we have this id?
+     * @param entity The entity containing the unique key we want to check
+     * @return true if the id's match, false otherwise
+     */
+    public boolean hasId(final Entity entity)
+    {
+        return hasId(entity.getId());
+    }
+    
+    /**
+     * Do we have this id?
+     * @param id The unique key we want to check
+     * @return true if the id's match, false otherwise
+     */
+    public boolean hasId(final UUID id)
+    {
+        return (getId().equals(id));
     }
     
     /**

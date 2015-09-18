@@ -19,6 +19,9 @@ public class Button extends Entity implements Disposable
     //object representing the boundary
     private Rect bounds;
     
+    //is the button visible
+    private boolean visible = true;
+    
     /**
      * Create a button
      * @param image Image representing button
@@ -33,6 +36,24 @@ public class Button extends Entity implements Disposable
         
         //set default bounds
         setBounds(0, 0, (int)getWidth(), (int)getHeight());
+    }
+    
+    /**
+     * Set the button as visible.<br>
+     * @param visible true if we want the button to be rendered, false otherwise
+     */
+    public void setVisible(final boolean visible)
+    {
+        this.visible = visible;
+    }
+    
+    /**
+     * Is this button visible?
+     * @return true = yes, false = no
+     */
+    public boolean isVisible()
+    {
+        return this.visible;
     }
     
     @Override
@@ -100,6 +121,10 @@ public class Button extends Entity implements Disposable
     @Override
     public void render(final Canvas canvas) throws Exception
     {
+        //if not visible don't render it
+        if (!isVisible())
+            return;
+        
         super.render(canvas, getImage());
     }
 }
