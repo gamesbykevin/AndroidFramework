@@ -1,8 +1,6 @@
 package com.gamesbykevin.androidframework.resources;
 
-import android.media.MediaPlayer;
 import android.app.Activity;
-import android.content.res.AssetFileDescriptor;
 
 import java.util.HashMap;
 
@@ -18,7 +16,7 @@ public class Audio
     private static boolean AudioEnabled = true;
     
     //hashmap of audio
-    private static HashMap<Object, MediaPlayer> AUDIO = new HashMap<Object, MediaPlayer>();
+    private static HashMap<Object, Sound> AUDIO = new HashMap<Object, Sound>();
     
     /**
      * Load the asset
@@ -46,58 +44,28 @@ public class Audio
         for (int index = 0; index < keys.length; index++)
         {
             //only load asset if it does not exist
-            if (getAudio(keys[index]) == null)
+            if (getSound(keys[index]) == null)
             {
-                //asset file descriptor
-                AssetFileDescriptor afd = activity.getAssets().openFd(directoryPath + "/" + paths[index]);
-                
-                //create the media player
-                MediaPlayer player = new MediaPlayer();
-                
-                //assign the datasource
-                player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                
-                //prepare for playback
-                player.prepare();
+                //create a new sound object
+                Sound sound = new Sound(activity, directoryPath + "/" + paths[index]);
                 
                 //place in hashmap
-                AUDIO.put(keys[index], player);
+                AUDIO.put(keys[index], sound);
             }
         }
     }
     
     /**
-     * 
-     * @param key
-     * @return 
+     * Get the audio resource
+     * @param key The unique key of the desired resource
+     * @return The audio resource
      */
-    private static MediaPlayer getAudio(final Object key)
+    public static Sound getSound(final Object key)
     {
         if (AUDIO == null)
-            AUDIO = new HashMap<Object, MediaPlayer>();
+            AUDIO = new HashMap<Object, Sound>();
         
         return AUDIO.get(key);
-    }
-    
-    /**
-     * Recycle objects
-     */
-    public static void dispose()
-    {
-        if (AUDIO != null)
-        {
-            for (MediaPlayer player : AUDIO.values())
-            {
-                if (player != null)
-                {
-                    player.release();
-                    player = null;
-                }
-            }
-            
-            AUDIO.clear();
-            AUDIO = null;
-        }
     }
     
     /**
@@ -121,27 +89,18 @@ public class Audio
         if (!AudioEnabled)
         {
             //pause all existing sound
-            for (MediaPlayer player : AUDIO.values())
+            for (Sound sound : AUDIO.values())
             {
                 //if exists pause sound
-                if (player != null)
-                    player.pause();
-            }
-        }
-        else
-        {
-            //move all audio to the beginning
-            for (MediaPlayer player : AUDIO.values())
-            {
-                if (player != null)
-                    player.seekTo(0);
+                if (sound != null)
+                    sound.stop();
             }
         }
     }
     
     /**
-     * 
-     * @param key 
+     * Play the audio with no loop
+     * @param key The key of the desired audio
      */
     public static void play(final Object key)
     {
@@ -149,33 +108,59 @@ public class Audio
     }
     
     /**
-     * 
-     * @param key
-     * @param loop 
+     * Play the audio
+     * @param key The unique key of the desired audio
+     * @param loop Do we loop the audio
      */
     public static void play(final Object key, final boolean loop)
     {
         if (!isAudioEnabled())
             return;
         
-        //don't play if already playing
-        if (!getAudio(key).isPlaying())
+        if (getSound(key) != null)
+            getSound(key).play(loop);
+    }
+    
+    /**
+     * Stop all audio, technically we just pause it
+     */
+    public static void stop()
+    {
+        for (Object key : AUDIO.keySet())
         {
-            getAudio(key).setLooping(loop);
-            getAudio(key).start();
+            stop(key);
         }
     }
     
     /**
-     * 
-     * @param key 
+     * Stop the audio.<br>
+     * We actually just pause the audio if it is already playing
+     * @param key The key of the desired audio
      */
     public static void stop(final Object key)
     {
-        if (getAudio(key) != null)
+        if (getSound(key) != null)
+            getSound(key).stop();
+    }
+    
+    /**
+     * Recycle objects
+     */
+    public static void dispose()
+    {
+        if (AUDIO != null)
         {
-            if (getAudio(key).isPlaying())
-                getAudio(key).pause();
+            for (Sound sound : AUDIO.values())
+            {
+                if (sound != null)
+                {
+                    sound.dispose();
+                    sound = null;
+                }
+            }
+            
+            AUDIO.clear();
+            AUDIO = null;
         }
     }
 }
