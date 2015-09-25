@@ -205,11 +205,29 @@ public class Entity extends Cell implements Disposable
     
     /**
      * Assign the width
+     * @param entity The object containing the width
+     */
+    public void setWidth(final Entity entity)
+    {
+        setWidth(entity.getWidth());
+    }
+    
+    /**
+     * Assign the width
      * @param w The desired width
      */
     public void setWidth(final double w)
     {
         this.w = w;
+    }
+    
+    /**
+     * Assign the height
+     * @param entity The object containing the height
+     */
+    public void setHeight(final Entity entity)
+    {
+        setHeight(entity.getHeight());
     }
     
     /**

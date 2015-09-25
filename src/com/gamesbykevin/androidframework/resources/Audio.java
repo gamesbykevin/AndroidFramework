@@ -126,9 +126,12 @@ public class Audio
      */
     public static void stop()
     {
-        for (Object key : AUDIO.keySet())
+        if (AUDIO != null)
         {
-            stop(key);
+            for (Object key : AUDIO.keySet())
+            {
+                stop(key);
+            }
         }
     }
     
