@@ -10,6 +10,11 @@ import android.view.MotionEvent;
 public interface Screen 
 {
     /**
+     * Logic to reset the screen
+     */
+    public void reset();
+    
+    /**
      * This method implementation will allow the user to handle motion events on the screen
      * @param event Motion Event containing the performed action
      * @param x x-coordinate
