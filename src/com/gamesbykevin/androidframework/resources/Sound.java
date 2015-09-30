@@ -8,7 +8,7 @@ import android.media.MediaPlayer;
  * This class will represent a sound
  * @author GOD
  */
-public class Sound extends MediaPlayer implements Disposable
+public final class Sound extends MediaPlayer implements Disposable
 {
     /**
      * The start position of the sound resource
@@ -27,7 +27,7 @@ public class Sound extends MediaPlayer implements Disposable
      * @param path The physical location of the resource
      * @throws Exception 
      */
-    public Sound(final Activity activity, final String path) throws Exception
+    protected Sound(final Activity activity, final String path) throws Exception
     {
         //call parent constructor
         super();
