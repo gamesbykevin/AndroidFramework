@@ -147,6 +147,45 @@ public class Audio
     }
     
     /**
+     * Set the desired volume for all existing audio
+     * @param volume The desired volume 0.0 (%0 volume), 1.0 (100% volume)
+     */
+    public static void setVolume(final float volume)
+    {
+        if (AUDIO != null)
+        {
+            for (Object key : AUDIO.keySet())
+            {
+                setVolume(key, volume);
+            }
+        }
+    }
+    
+    /**
+     * Assign the volume for the specified audio
+     * @param key The key of the audio we want to manipulate
+     * @param volume The desired volume 0.0 (%0 volume), 1.0 (100% volume)
+     */
+    public static void setVolume(final Object key, float volume)
+    {
+        //if the sound exists 
+        if (getSound(key) != null)
+        {
+            //make sure the audio is available for playback
+            if (getSound(key).isPrepared())
+            {
+                //keep volumne in range
+                if (volume < 0f)
+                    volume = 0.0f;
+                if (volume > 1f)
+                    volume = 1.0f;
+
+                getSound(key).setVolume(volume, volume);
+            }
+        }
+    }
+    
+    /**
      * Recycle objects
      */
     public static void dispose()

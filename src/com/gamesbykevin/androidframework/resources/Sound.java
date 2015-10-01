@@ -55,8 +55,8 @@ public final class Sound extends MediaPlayer implements Disposable
 
     
     /**
-     * 
-     * @return 
+     * Has the audio been prepared for playback
+     * @return true = yes, false = no
      */
     public boolean isPrepared()
     {
@@ -64,8 +64,8 @@ public final class Sound extends MediaPlayer implements Disposable
     }
     
     /**
-     * 
-     * @param prepared 
+     * Flag the audio prepared
+     * @param prepared true = prepared, false = otherwise
      */
     public void setPrepared(final boolean prepared)
     {
