@@ -1,5 +1,7 @@
 package com.gamesbykevin.androidframework.screen;
 
+import com.gamesbykevin.androidframework.resources.Disposable;
+
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
@@ -7,7 +9,7 @@ import android.view.MotionEvent;
  * The interface for the game screen
  * @author ABRAHAM
  */
-public interface Screen 
+public interface Screen extends Disposable
 {
     /**
      * Logic to reset the screen
