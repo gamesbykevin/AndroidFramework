@@ -310,6 +310,12 @@ public class Entity extends Cell implements Disposable
         }
     }
     
+    /**
+     * Render the entity
+     * @param canvas Object we want to write our pixel data
+     * @param image The image we are rendering
+     * @throws Exception 
+     */
     public void render(final Canvas canvas, final Bitmap image) throws Exception
     {
         if (getWidth() < 1)
