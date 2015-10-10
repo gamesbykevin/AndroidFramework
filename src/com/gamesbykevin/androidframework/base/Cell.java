@@ -10,6 +10,14 @@ public class Cell
     private double col, row;
     
     /**
+     * Create a new cell with (0,0) location
+     */
+    public Cell()
+    {
+        this(0,0);
+    }
+    
+    /**
      * Create a new cell of the specified location
      * @param col Column
      * @param row Row

@@ -61,7 +61,7 @@ public class Spritesheet implements Disposable
      * Get the current key
      * @return The key of the current animation
      */
-    private Object getKey()
+    public Object getKey()
     {
         return this.key;
     }
