@@ -49,6 +49,16 @@ public class Entity extends Cell implements Disposable
     }
     
     /**
+     * Get the distance
+     * @param entity The entity we want to compare
+     * @return The distance between the current and specified entities
+     */
+    public double getDistance(final Entity entity)
+    {
+        return Math.sqrt(Math.pow(entity.getX() - getX(), 2) + Math.pow(entity.getY() - getY(), 2));
+    }
+    
+    /**
      * Get the id
      * @return The unique id that identifies this entity
      */
