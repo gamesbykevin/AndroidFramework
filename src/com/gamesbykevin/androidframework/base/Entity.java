@@ -55,7 +55,18 @@ public class Entity extends Cell implements Disposable
      */
     public double getDistance(final Entity entity)
     {
-        return Math.sqrt(Math.pow(entity.getX() - getX(), 2) + Math.pow(entity.getY() - getY(), 2));
+        return getDistance(entity.getX(), entity.getY());
+    }
+    
+    /**
+     * Get the distance
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return The distance between the entity and specified (x,y)
+     */
+    public double getDistance(final double x, final double y)
+    {
+        return Math.sqrt(Math.pow(x - getX(), 2) + Math.pow(y - getY(), 2));
     }
     
     /**
