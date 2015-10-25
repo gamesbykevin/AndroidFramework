@@ -83,8 +83,8 @@ public class Images
      */
     public static boolean loadImage(final Activity activity, final Object key, final String location) throws Exception
     {
-        //only load the asset if it does not exist
-        if (getImage(key) == null)
+        //only load the asset if it does not exist or if it has been recycled
+        if (getImage(key) == null || getImage(key) != null && getImage(key).isRecycled())
         {
             IMAGES.put(key, BitmapFactory.decodeStream(activity.getAssets().open(location)));
             return true;
@@ -116,11 +116,10 @@ public class Images
         {
             for (Bitmap image : IMAGES.values())
             {
-                if (image != null)
-                {
+                if (image != null && !image.isRecycled())
                     image.recycle();
-                    image = null;
-                }
+                
+                image = null;
             }
             
             IMAGES.clear();
