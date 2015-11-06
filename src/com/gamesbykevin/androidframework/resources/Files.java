@@ -1,7 +1,6 @@
 package com.gamesbykevin.androidframework.resources;
 
 import android.app.Activity;
-import java.io.InputStream;
 import java.util.HashMap;
 
 /**
