@@ -6,7 +6,7 @@ package com.gamesbykevin.androidframework.base;
  */
 public class Cell 
 {
-    //the locaton
+    //the location
     private double col, row;
     
     /**
@@ -80,5 +80,26 @@ public class Cell
     public void setRow(final double row)
     {
         this.row = row;
+    }
+    
+    /**
+     * Do we have this location?
+     * @param cell Cell containing the (column, row)
+     * @return true if the parameter Cell (column, row) matches the (column, row) of this Cell
+     */
+    public boolean hasLocation(final Cell cell)
+    {
+    	return hasLocation(cell.getCol(), cell.getRow());
+    }
+    
+    /**
+     * Do we have this location?
+     * @param col Column
+     * @param row Row
+     * @return true if the specified (column, row) match the (column, row) of this Cell
+     */
+    public boolean hasLocation(final double col, final double row)
+    {
+    	return (getCol() == col && getRow() == row);
     }
 }

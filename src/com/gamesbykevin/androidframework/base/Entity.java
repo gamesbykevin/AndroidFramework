@@ -121,15 +121,6 @@ public class Entity extends Cell implements Disposable
     }
     
     /**
-     * Update the (x,y) coordinate based on the assigned (dx, dy) velocity
-     */
-    public void update()
-    {
-        setX(getX() + getDX());
-        setY(getY() + getDY());
-    }
-    
-    /**
      * Get the x-velocity
      * @return the assigned x-velocity
      */
@@ -163,6 +154,15 @@ public class Entity extends Cell implements Disposable
     public void setDY(final double dy)
     {
         this.dy = dy;
+    }
+    
+    /**
+     * Do we have velocity set?
+     * @return true if either DX or DY are not 0, false otherwise
+     */
+    public boolean hasVelocity()
+    {
+    	return (getDX() != 0 || getDY() != 0);
     }
     
     /**
@@ -313,8 +313,8 @@ public class Entity extends Cell implements Disposable
         if (this.source == null)
             this.source = new Rect();
         
-        //assign the source
-        this.source.set(0, 0, image.getWidth(), image.getHeight());
+        //assign values
+        this.source.set(0, 0, image.getWidth(),  image.getHeight());
         
         //return result
         return this.source;
@@ -359,5 +359,5 @@ public class Entity extends Cell implements Disposable
         
         //draw the provided image at the current location
         canvas.drawBitmap(image, getSource(image), getDestination(), null);
-    }
+   }
 }

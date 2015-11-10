@@ -41,7 +41,7 @@ public abstract class Maze implements IMaze
     protected static final int DEFAULT_MAZE_DIMENSION = 10;
     
     //the start location to render the 2d maze, and the room dimension
-    private int x = 0, y = 0, d = 10;
+    private int x = 0, y = 0, d = 32;
     
     //object used to render the 2d maze
     private Paint paint;
