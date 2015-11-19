@@ -15,7 +15,7 @@ public class Audio
      */
     private static boolean AudioEnabled = true;
     
-    //hashmap of audio
+    //hash map of audio
     private static HashMap<Object, Sound> AUDIO = new HashMap<Object, Sound>();
     
     /**
@@ -89,7 +89,7 @@ public class Audio
         //only load asset if it does not exist
         if (getSound(key) == null)
         {
-            //create sound while placing in hashmap
+            //create sound while placing in hash map
             AUDIO.put(key, new Sound(activity, location));
             return true;
         }
@@ -131,12 +131,16 @@ public class Audio
         //if audio is not enabled, stop all sounds
         if (!AudioEnabled)
         {
-            //pause all existing sound
-            for (Sound sound : AUDIO.values())
+        	//make sure audio hash map exists
+            if (AUDIO != null)
             {
-                //if exists pause sound
-                if (sound != null)
-                    sound.stop();
+	            //pause all existing sound
+	            for (Sound sound : AUDIO.values())
+	            {
+	                //if exists pause sound
+	                if (sound != null)
+	                    sound.stop();
+	            }
             }
         }
     }
@@ -214,10 +218,10 @@ public class Audio
         //if the sound exists 
         if (getSound(key) != null)
         {
-            //make sure the audio is available for playback
+            //make sure the audio is available for play back
             if (getSound(key).isPrepared())
             {
-                //keep volumne in range
+                //keep volume in range
                 if (volume < 0f)
                     volume = 0.0f;
                 if (volume > 1f)

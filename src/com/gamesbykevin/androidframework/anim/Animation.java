@@ -2,13 +2,11 @@ package com.gamesbykevin.androidframework.anim;
 
 import android.graphics.Bitmap;
 
-import com.gamesbykevin.androidframework.resources.Disposable;
-
 /**
  * This class represents an animation
  * @author ABRAHAM
  */
-public class Animation implements Disposable
+public class Animation implements IAnimation
 {
     /**
      * The number of nanoseconds per second
@@ -52,6 +50,9 @@ public class Animation implements Disposable
     
     //does the animation loop?
     private boolean loop = false;
+    
+    //has the animation finished
+    private boolean finished = false;
     
     /**
      * Create a single animation the size of our provided Bitmap
@@ -190,7 +191,7 @@ public class Animation implements Disposable
     }
     
     /**
-     * Assign the current timestamp
+     * Assign the current time stamp
      */
     private void assignTime()
     {
@@ -209,23 +210,25 @@ public class Animation implements Disposable
     /**
      * Update the animation
      */
+    @Override
     public void update()
     {
+    	//if the animation finished, no need to update
+    	if (hasFinished())
+    		return;
+    	
         //if the time has not been set yet
         if (getTime() <= 0)
             assignTime();
         
         //calculate the number of milliseconds passed
-        final long elapsed = ((System.nanoTime() - time) / NANO_SECONDS_PER_MILLISECOND);
+        final long elapsed = ((System.nanoTime() - getTime()) / NANO_SECONDS_PER_MILLISECOND);
         
         //if enough time has elapsed to move to the animation
         if (elapsed >= getDelay())
         {
             //increase the frame index
             final int nextFrameIndex = getFrameIndex() + 1;
-            
-            //increase the frame index
-            setFrameIndex(nextFrameIndex);
             
             //update our time
             assignTime();
@@ -242,15 +245,65 @@ public class Animation implements Disposable
                 {
                     //if we aren't looping move back 1 frame
                     setFrameIndex(nextFrameIndex - 1);
+                    
+                    //flag finished since we don't loop
+                    setFinished(true);
                 }
             }
+            else
+            {
+            	//assign the next frame index
+            	setFrameIndex(nextFrameIndex);
+            }
         }
+    }
+    
+    /**
+     * Reset the animation
+     */
+    @Override
+    public void reset()
+    {
+    	//start at the first animation
+        setFrameIndex(FRAME_INDEX_START);
+        
+        //set the current time
+        assignTime();
+        
+        //flag finished false
+        setFinished(false);
+    }
+    
+    /**
+     * Flag the animation as finished.<br>
+     * You won't be able to flag finished if the animation is set to loop
+     * @param finished true = the animation has finished, false otherwise or if the animation is set to loop
+     */
+    private void setFinished(final boolean finished)
+    {
+    	this.finished = finished;
+    }
+    
+    /**
+     * Has the animation finished?<br>
+     * If the animation loops, it will never be finished.<br>
+     * The animation will be finished if time expires while on the last frame index.
+     * @return true if the animation does not loop and time expires while on the last frame index, otherwise false
+     */
+    public boolean hasFinished()
+    {
+    	//it will never finish if looping
+    	if (hasLoop())
+    		setFinished(false);
+    	
+    	return this.finished;
     }
     
     /**
      * Get the image
      * @return The current image in our animation
      */
+    @Override
     public Bitmap getImage()
     {
         return getFrames()[this.getFrameIndex()];
@@ -265,7 +318,11 @@ public class Animation implements Disposable
             {
                 if (getFrames()[index] != null)
                 {
-                    getFrames()[index].recycle();
+                	//if not already recycled
+                	if (!getFrames()[index].isRecycled())
+                		getFrames()[index].recycle();
+                	
+                	//assign null
                     getFrames()[index] = null;
                 }
             }

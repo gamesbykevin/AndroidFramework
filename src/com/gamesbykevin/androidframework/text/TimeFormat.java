@@ -10,6 +10,17 @@ import java.util.Date;
  */
 public class TimeFormat 
 {
+	/**
+	 * Time format mm:ss.SSS
+	 */
+	public static final String FORMAT_1 = "mm:ss.SSS";
+	
+	/**
+	 * Time format ss.SSS
+	 */
+	public static final String FORMAT_2 = "ss.SSS";
+	
+	
     /**
      * Our object used to format the time
      */

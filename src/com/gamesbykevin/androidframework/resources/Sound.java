@@ -49,13 +49,13 @@ public final class Sound extends MediaPlayer implements Disposable
             }
         });
         
-        //prepare resource for playback
+        //prepare resource for play back
         super.prepare();
     }
 
     
     /**
-     * Has the audio been prepared for playback
+     * Has the audio been prepared for play back
      * @return true = yes, false = no
      */
     public boolean isPrepared()
@@ -92,8 +92,8 @@ public final class Sound extends MediaPlayer implements Disposable
     }
     
     /**
-     * Stop playback of the resource.<br>
-     * We move the audio playback position back to the beginning and then pause
+     * Stop play back of the resource.<br>
+     * We move the audio play back position back to the beginning and then pause
      */
     @Override
     public void stop()
@@ -131,23 +131,14 @@ public final class Sound extends MediaPlayer implements Disposable
         if (!isPrepared())
             return;
         
-        //don't play if already playing
-        if (!isPlaying())
-        {
-            //set loop
-            setLooping(loop);
-            
-            //play the audio
-            start();
-        }
-        else
-        {
-            //go to beginning
-            seekTo(POSITION_START);
-            
-            //play the audio
-            start();
-        }
+        //set loop
+        setLooping(loop);
+        
+        //go to beginning
+        seekTo(POSITION_START);
+        
+        //play the audio
+        start();
     }
     
     /**

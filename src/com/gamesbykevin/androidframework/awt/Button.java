@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gamesbykevin.androidframework.base.Entity;
 import com.gamesbykevin.androidframework.resources.Disposable;
 
@@ -20,22 +23,29 @@ public class Button extends Entity implements Disposable
     //object representing the boundary
     private Rect bounds;
     
-    //is the button visible
-    private boolean visible = true;
-    
     //the location of the button text
     private float textX, textY;
     
-    //the text to display on top of the button
-    private String text = "";
+	//list of descriptions that can be displayed
+	private List<String> descriptions;
+
+	//our index selection
+	private int index = 0;
     
+	//is the button visible
+	private boolean visible = true;
+	
     /**
      * Create a button
      * @param image Image representing button
      */
     public Button(final Bitmap image)
     {
+    	//assign the image reference
         this.image = image;
+		
+		//create our list of descriptions
+		this.descriptions = new ArrayList<String>();
         
         //assign the default dimensions
         super.setWidth(image.getWidth());
@@ -46,22 +56,100 @@ public class Button extends Entity implements Disposable
     }
     
     /**
-     * Assign the text
-     * @param text The text we want to render on top of the button
+     * Flag the visibility of the button
+     * @param visible true = button will be rendered, false otherwise
      */
-    public void setText(final String text)
+    public void setVisible(final boolean visible)
     {
-        this.text = text;
+    	this.visible = visible;
     }
     
     /**
-     * Get the text
-     * @return The text we want to render on top of the button
+     * Is the button visible?
+     * @return true = button is visible, false otherwise
      */
-    public String getText()
+    public boolean isVisible()
     {
-        return this.text;
+    	return this.visible;
     }
+    
+	/**
+	 * Add the text description to the list.<br>
+	 * This will be the text the user is shown.<br>
+	 * Descriptions will be displayed in the order they are added.
+	 * @param description The text description
+	 */
+	public void addDescription(final String description)
+	{
+		this.descriptions.add(description);
+	}
+    
+	/**
+	 * Get the desired text description
+	 * @param index The position of the desired text description
+	 * @return The text we want to render on top of the button
+	 */
+    public String getDescription(final int index)
+    {
+        return this.descriptions.get(index);
+    }
+    
+    /**
+     * Get the description
+     * @return The text description at the current assigned Index
+     */
+    public String getDescription()
+    {
+    	return getDescription(getIndex());
+    }
+    
+    /**
+     * Set the description at the specified index location.<br>
+     * If the index location is out of bounds it will be added and ignore the index location
+     * @param index The index location where we want to update the description
+     * @param description The text we want to display
+     */
+    public void setDescription(final int index, final String description)
+    {
+    	//if the list is empty or the index is out of bounds
+    	if (descriptions.isEmpty() || index < 0 || index >= descriptions.size())
+    	{
+    		addDescription(description);
+    	}
+    	else
+    	{
+    		descriptions.set(index, description);
+    	}
+    }
+    
+	/**
+	 * Get the index selection
+	 * @return the index selection of the description we want displayed
+	 */
+	public int getIndex()
+	{
+		return this.index;
+	}
+	
+	/**
+	 * Assign the index selection.<br>
+	 * This will control the description displayed to the user.<br><br>
+	 * If the index provided is out of bounds it will be corrected as follows<br>
+	 * If the index value exceeds the number of descriptions it will be reset to 0.<br>
+	 * If the index value is less than 0, it will be assigned the limit (total number of descriptions).
+	 * @param index The position of the desired description to be displayed to the user
+	 */
+	public void setIndex(final int index)
+	{
+		//assign index
+		this.index = index;
+		
+		//make sure the index stays in bounds
+		if (getIndex() < 0)
+			setIndex(this.descriptions.size() - 1);
+		if (getIndex() > this.descriptions.size() - 1)
+			setIndex(0);
+	}
     
     /**
      * Position the text in the center of the button.<br>
@@ -70,11 +158,11 @@ public class Button extends Entity implements Disposable
      */
     public void positionText(final Paint paint)
     {
-        //create temp rectangle object
+        //create temporary rectangle object
         Rect tmp = new Rect();
         
         //populate the rectangle dimensions based on the text and font metrics of our paint object
-        paint.getTextBounds(getText(), 0, getText().length(), tmp);
+        paint.getTextBounds(getDescription(), 0, getDescription().length(), tmp);
         
         //position the x-coordinate in the middle
         setTextX((float)(getX() + (getWidth() / 2) - (tmp.width() / 2)));
@@ -119,37 +207,25 @@ public class Button extends Entity implements Disposable
         return this.textY;
     }
     
-    /**
-     * Set the button as visible.<br>
-     * @param visible true if we want the button to be rendered, false otherwise
-     */
-    public void setVisible(final boolean visible)
-    {
-        this.visible = visible;
-    }
-    
-    /**
-     * Is this button visible?
-     * @return true = yes, false = no
-     */
-    public boolean isVisible()
-    {
-        return this.visible;
-    }
-    
     @Override
     public void dispose()
     {
         super.dispose();
         
         this.bounds = null;
+        
+		if (descriptions != null)
+		{
+			descriptions.clear();
+			descriptions = null;
+		}
     }
     
     /**
      * Get the image
      * @return The image assigned to this button
      */
-    private Bitmap getImage()
+    public Bitmap getImage()
     {
         return this.image;
     }
@@ -200,36 +276,38 @@ public class Button extends Entity implements Disposable
     }
     
     /**
-     * Render the button image with the assigned text
+     * Render the button image with the assigned text.<br>
+     * If the button is not visible, it will not be rendered
      * @param canvas Object to write pixel data
      * @param paint Paint object containing font metrics
      * @throws Exception 
      */
     public void render(final Canvas canvas, final Paint paint) throws Exception
     {
-        //if not visible don't render it
-        if (!isVisible())
-            return;
-        
+    	//if not visible we will not render
+    	if (!isVisible())
+    		return;
+    	
         //render the button
         this.render(canvas);
         
         //now draw text on top of button
-        canvas.drawText(getText(), getTextX(), getTextY(), paint);
+        canvas.drawText(getDescription(), getTextX(), getTextY(), paint);
     }
     
     /**
-     * Render just the button image itself
+     * Render just the button image itself.<br>
+     * If the button is not visible, it will not be rendered
      * @param canvas Object to write pixel data
      * @throws Exception 
      */
     @Override
     public void render(final Canvas canvas) throws Exception
     {
-        //if not visible don't render it
-        if (!isVisible())
-            return;
-        
+    	//if not visible we will not render
+    	if (!isVisible())
+    		return;
+    	
         super.render(canvas, getImage());
     }
 }
