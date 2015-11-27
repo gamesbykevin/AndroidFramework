@@ -136,7 +136,8 @@ public class Button extends Entity implements Disposable
 	 * This will control the description displayed to the user.<br><br>
 	 * If the index provided is out of bounds it will be corrected as follows<br>
 	 * If the index value exceeds the number of descriptions it will be reset to 0.<br>
-	 * If the index value is less than 0, it will be assigned the limit (total number of descriptions).
+	 * If the index value is less than 0, it will be assigned the limit (total number of descriptions).<br>
+	 * If the descriptions list is empty 0 will always be assigned.
 	 * @param index The position of the desired description to be displayed to the user
 	 */
 	public void setIndex(final int index)
@@ -144,11 +145,20 @@ public class Button extends Entity implements Disposable
 		//assign index
 		this.index = index;
 		
-		//make sure the index stays in bounds
-		if (getIndex() < 0)
-			setIndex(this.descriptions.size() - 1);
-		if (getIndex() > this.descriptions.size() - 1)
-			setIndex(0);
+		//if not empty make sure we are inbounds
+		if (!this.descriptions.isEmpty())
+		{
+			//make sure the index stays in bounds
+			if (getIndex() < 0)
+				setIndex(this.descriptions.size() - 1);
+			if (getIndex() > this.descriptions.size() - 1)
+				setIndex(0);
+		}
+		else
+		{
+			//default 0
+			this.index = 0;
+		}
 	}
     
     /**

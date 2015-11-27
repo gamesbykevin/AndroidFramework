@@ -21,6 +21,9 @@ public final class Sound extends MediaPlayer implements Disposable
     //is this resource paused
     private boolean paused = false;
     
+    //the current play back position (milliseconds)
+    private int position = 0;
+    
     /**
      * Create a new sound resource
      * @param activity Object containing asset manager to load resource
@@ -35,10 +38,10 @@ public final class Sound extends MediaPlayer implements Disposable
         //the object used to read the data of this resource
         AssetFileDescriptor afd = activity.getAssets().openFd(path);
         
-        //set the data sounce
+        //set the data source
         setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
         
-        //assign the listnener so we will know when the resource is ready for playback
+        //assign the listener so we will know when the resource is ready for play back
         setOnPreparedListener(new OnPreparedListener()
         {
             @Override
@@ -53,7 +56,6 @@ public final class Sound extends MediaPlayer implements Disposable
         super.prepare();
     }
 
-    
     /**
      * Has the audio been prepared for play back
      * @return true = yes, false = no
@@ -72,9 +74,30 @@ public final class Sound extends MediaPlayer implements Disposable
         this.prepared = prepared;
     }
     
+    /**
+     * Is the audio paused
+     * @return true = yes, false = no
+     */
     public boolean isPaused()
     {
         return this.paused;
+    }
+    
+    /**
+     * Assign the position based on the current position of play back (milliseconds)
+     */
+    private void setPosition()
+    {
+    	this.position = super.getCurrentPosition();
+    }
+    
+    /**
+     * Get the previous position
+     * @return The previous position of desired play back (milliseconds)
+     */
+    private int getPosition()
+    {
+    	return this.position;
     }
     
     @Override
@@ -83,6 +106,9 @@ public final class Sound extends MediaPlayer implements Disposable
         //don't bother if the resource isn't prepared
         if (!isPrepared())
             return;
+        
+        //store the current position
+        setPosition();
         
         //pause the audio
         super.pause();
@@ -134,16 +160,25 @@ public final class Sound extends MediaPlayer implements Disposable
         //set loop
         setLooping(loop);
         
-        //go to beginning
-        seekTo(POSITION_START);
+        //if the game
+        if (isPaused())
+        {
+        	//start play back at the previous position
+        	seekTo(getPosition());
+        }
+        else
+        {
+            //start from the beginning
+            seekTo(POSITION_START);
+        }
         
         //play the audio
         start();
     }
     
     /**
-     * 
-     * @param paused 
+     * Flag the audio paused
+     * @param paused true = yes, false = no
      */
     public void setPaused(final boolean paused)
     {

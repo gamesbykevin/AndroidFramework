@@ -169,7 +169,7 @@ public class Audio
     }
     
     /**
-     * Stop all audio, technically we just pause it
+     * Stop all audio, technically we just set the play back position to the start and pause it
      */
     public static void stop()
     {
@@ -183,14 +183,38 @@ public class Audio
     }
     
     /**
-     * Stop the audio.<br>
-     * We actually just pause the audio if it is already playing
+     * Stop the specified audio.<br>
+     * We actually just pause the audio if it is already playing and set the play back position to the beginning.
      * @param key The key of the desired audio
      */
     public static void stop(final Object key)
     {
         if (getSound(key) != null)
             getSound(key).stop();
+    }
+    
+    /**
+     * Pause all audio play back at its current position
+     */
+    public static void pause()
+    {
+        if (AUDIO != null)
+        {
+            for (Object key : AUDIO.keySet())
+            {
+                pause(key);
+            }
+        }
+    }
+    
+    /**
+     * Pause the audio at its current play back position.
+     * @param key The key of the desired audio
+     */
+    public static void pause(final Object key)
+    {
+        if (getSound(key) != null)
+            getSound(key).pause();
     }
     
     /**
