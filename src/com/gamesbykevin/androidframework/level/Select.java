@@ -341,7 +341,14 @@ public class Select implements ISelect
 	{
 		if (getTotal() > this.getLevelsPerPage())
 		{
-			return (getTotal() / this.getLevelsPerPage()) + 1;
+			if (getTotal() % this.getLevelsPerPage() != 0)
+			{
+				return (getTotal() / this.getLevelsPerPage()) + 1;
+			}
+			else
+			{
+				return (getTotal() / this.getLevelsPerPage());
+			}
 		}
 		else
 		{
