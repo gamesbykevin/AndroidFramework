@@ -49,6 +49,23 @@ public class Spritesheet implements Disposable
     }
  
     /**
+     * Get the current animation
+     * @return The current animation
+     */
+    public Animation get()
+    {
+        return (get(getKey()));
+    }
+    
+    /**
+     * Update the current animation in this sprite sheet
+     */
+    public void update()
+    {
+    	get().update();
+    }
+    
+    /**
      * Assign the current animation
      * @param key The unique key of the desired animation
      */
@@ -64,15 +81,6 @@ public class Spritesheet implements Disposable
     public Object getKey()
     {
         return this.key;
-    }
-    
-    /**
-     * Get the current animation
-     * @return The current animation
-     */
-    public Animation get()
-    {
-        return (get(getKey()));
     }
     
     /**

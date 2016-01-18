@@ -35,6 +35,12 @@ public class Button extends Entity implements Disposable
 	//is the button visible
 	private boolean visible = true;
 	
+	//has the button been pressed
+	private boolean pressed = false;
+	
+	//has the button been released
+	private boolean released = false;
+	
     /**
      * Create a button
      * @param image Image representing button
@@ -53,6 +59,42 @@ public class Button extends Entity implements Disposable
         
         //set default bounds
         setBounds(0, 0, (int)getWidth(), (int)getHeight());
+    }
+    
+    /**
+     * Flag the button pressed
+     * @param pressed true = yes, false = no
+     */
+    public void setPressed(final boolean pressed)
+    {
+    	this.pressed = pressed;
+    }
+    
+    /**
+     * Is the button pressed?
+     * @return true = yes, false = no
+     */
+    public boolean isPressed()
+    {
+    	return this.pressed;
+    }
+    
+    /**
+     * Flag the button released
+     * @param released true = yes, false = no
+     */
+    public void setReleased(final boolean released)
+    {
+    	this.released = released;
+    }
+    
+    /**
+     * Has the button been released?
+     * @return true = yes, false = no
+     */
+    public boolean isReleased()
+    {
+    	return this.released;
     }
     
     /**

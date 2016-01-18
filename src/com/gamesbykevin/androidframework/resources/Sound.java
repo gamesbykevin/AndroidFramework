@@ -191,6 +191,10 @@ public final class Sound extends MediaPlayer implements Disposable
     @Override
     public void dispose()
     {
+    	//reset the media player
+    	super.reset();
+    	
+    	//release allocated resources
         super.release();
     }
 }

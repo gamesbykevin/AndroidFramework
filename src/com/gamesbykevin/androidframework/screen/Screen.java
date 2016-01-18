@@ -3,7 +3,6 @@ package com.gamesbykevin.androidframework.screen;
 import com.gamesbykevin.androidframework.resources.Disposable;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 
 /**
  * The interface for the game screen
@@ -18,13 +17,13 @@ public interface Screen extends Disposable
     
     /**
      * This method implementation will allow the user to handle motion events on the screen
-     * @param event Motion Event containing the performed action
+     * @param action The action of the motion event (ACTION_DOWN, ACTION_UP, etc....)
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if successful
      * @throws Exception 
      */
-    public boolean update(final MotionEvent event, final float x, final float y) throws Exception;
+    public boolean update(final int action, final float x, final float y) throws Exception;
     
     /**
      * Update necessary objects (if needed)

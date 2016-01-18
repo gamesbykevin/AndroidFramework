@@ -8,7 +8,6 @@ import android.graphics.Paint;
 /**
  * This class will represent a level select screen
  * @author GOD
- *
  */
 public class Select implements ISelect
 {
@@ -473,24 +472,10 @@ public class Select implements ISelect
 					continue;
 				
 				//our temporary button
-				final Button button;
+				final Button button = (isCompleted(levelNumber - 1)) ? solved : open;
 				
-				if (isCompleted(levelNumber - 1))
-				{
-					//assign the button reference
-					button = solved;
-					
-					//set a blank description
-					button.setDescription(0, "");
-				}
-				else
-				{
-					//assign the button reference
-					button = open;
-					
-					//set the description
-					button.setDescription(0, "" + levelNumber);
-				}
+				//set the description
+				button.setDescription(0, "" + levelNumber);
 				
 				//set button dimension
 				button.setWidth(getDimension());
