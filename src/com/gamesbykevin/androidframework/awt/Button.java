@@ -62,6 +62,15 @@ public class Button extends Entity implements Disposable
     }
     
     /**
+     * Get the descriptions
+     * @return The list of text descriptions for this button
+     */
+    public List<String> getDescriptions()
+    {
+    	return this.descriptions;
+    }
+    
+    /**
      * Flag the button pressed
      * @param pressed true = yes, false = no
      */
@@ -123,7 +132,7 @@ public class Button extends Entity implements Disposable
 	 */
 	public void addDescription(final String description)
 	{
-		this.descriptions.add(description);
+		getDescriptions().add(description);
 	}
     
 	/**
@@ -133,7 +142,7 @@ public class Button extends Entity implements Disposable
 	 */
     public String getDescription(final int index)
     {
-        return this.descriptions.get(index);
+        return getDescriptions().get(index);
     }
     
     /**
@@ -154,13 +163,13 @@ public class Button extends Entity implements Disposable
     public void setDescription(final int index, final String description)
     {
     	//if the list is empty or the index is out of bounds
-    	if (descriptions.isEmpty() || index < 0 || index >= descriptions.size())
+    	if (getDescriptions().isEmpty() || index < 0 || index >= getDescriptions().size())
     	{
     		addDescription(description);
     	}
     	else
     	{
-    		descriptions.set(index, description);
+    		getDescriptions().set(index, description);
     	}
     }
     
@@ -188,12 +197,12 @@ public class Button extends Entity implements Disposable
 		this.index = index;
 		
 		//if not empty make sure we are inbounds
-		if (!this.descriptions.isEmpty())
+		if (!getDescriptions().isEmpty())
 		{
 			//make sure the index stays in bounds
 			if (getIndex() < 0)
-				setIndex(this.descriptions.size() - 1);
-			if (getIndex() > this.descriptions.size() - 1)
+				setIndex(getDescriptions().size() - 1);
+			if (getIndex() > getDescriptions().size() - 1)
 				setIndex(0);
 		}
 		else
