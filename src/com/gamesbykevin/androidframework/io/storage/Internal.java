@@ -34,10 +34,21 @@ public class Internal implements Disposable
      */
     public Internal(final String filename, final Activity activity)
     {
+    	this(filename, activity, false);
+    }
+    
+    /**
+     * Create internal storage object
+     * @param filename Name of our file
+     * @param activity Our activity reference
+     * @param debug Do we display the contents loaded?
+     */
+    public Internal(final String filename, final Activity activity, final boolean debug)
+    {
         //store the file name
         this.filename = filename;
         
-        //store the actvity reference
+        //store the activity reference
         this.activity = activity;
         
         //create new string builder where content will be added/stored
@@ -73,7 +84,8 @@ public class Internal implements Disposable
                 is.close();
                 
                 //display file content loaded
-                System.out.println("File Contents: " + total);
+                if (debug)
+                	System.out.println("File Contents: " + total);
             }
         }
         catch (Exception e)
