@@ -32,8 +32,8 @@ public class Select implements ISelect
     //the location where we start to draw our description
     private int descriptionX = 0, descriptionY = 0;
     
-    //the buttons on the level screen
-    private Button open, solved;
+    //the buttons on the level select screen
+    private Button open, solved, lock;
     private Button next, previous;
 
     //the starting location
@@ -54,6 +54,9 @@ public class Select implements ISelect
     //track the completed levels
     private boolean[] completed;
     
+    //track the locked levels
+    private boolean[] locked;
+    
     public Select()
     {
     	//default constructor
@@ -72,6 +75,12 @@ public class Select implements ISelect
     	{
     		solved.dispose();
     		solved = null;
+    	}
+    	
+    	if (lock != null)
+    	{
+    		lock.dispose();
+    		lock = null;
     	}
     	
     	if (next != null)
@@ -110,6 +119,12 @@ public class Select implements ISelect
     {
     	this.open = button;
     }
+	
+	@Override
+	public void setButtonLocked(Button button) 
+	{
+		this.lock = button;
+	}
     
 	@Override
     public void setDescription(final String description, final int descriptionX, final int descriptionY)
@@ -142,6 +157,9 @@ public class Select implements ISelect
     	
     	//create list to track level completion
     	this.completed = new boolean[total];
+    	
+    	//create list to track locked levels
+    	this.locked = new boolean[total];
     }
     
 	@Override
@@ -155,6 +173,18 @@ public class Select implements ISelect
     	return this.completed[index];
     }
     
+	@Override
+    public void setLocked(final int index, final boolean status)
+    {
+    	this.locked[index] = status;
+    }
+    
+	@Override
+	public boolean isLocked(final int index)
+	{
+		return this.locked[index];
+	}
+	
 	@Override
     public int getTotal()
     {
@@ -362,6 +392,9 @@ public class Select implements ISelect
 			throw new Exception("The open button is null and must be assigned");
 		if (this.solved == null)
 			throw new Exception("The solved button is null and must be assigned");
+		//we don't have to worry about the locked button, as it is not required
+		
+		
 		if (this.next == null)
 			throw new Exception("The next button is null and must be assigned");
 		if (this.previous == null)
@@ -472,7 +505,26 @@ public class Select implements ISelect
 					continue;
 				
 				//our temporary button
-				final Button button = (isCompleted(levelNumber - 1)) ? solved : open;
+				final Button button;
+				
+				if (isCompleted(levelNumber - 1))
+				{
+					//if flagged as completed use the solved button
+					button = solved;
+				}
+				else
+				{
+					//if the level is locked and the lock image exists
+					if (isLocked(levelNumber - 1) && lock != null)
+					{
+						button = lock;
+					}
+					else
+					{
+						//else the level is open
+						button = open;
+					}
+				}
 				
 				//set the description
 				button.setDescription(0, "" + levelNumber);

@@ -26,6 +26,8 @@ public interface ISelect extends Disposable
     
     public void setButtonOpen(final Button button);
     
+    public void setButtonLocked(final Button button);
+    
     public void setDescription(final String description, final int descriptionX, final int descriptionY);
     
     public String getDescription();
@@ -33,6 +35,10 @@ public interface ISelect extends Disposable
     public void setTotal(final int total);
     
     public void setCompleted(final int index, final boolean status);
+    
+    public void setLocked(final int index, final boolean status);
+    
+    public boolean isLocked(final int index);
     
     public int getTotal();
     
