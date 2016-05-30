@@ -576,6 +576,21 @@ public class Select implements ISelect
 		}
 		else
 		{
+			//if there is only 1 page, move "next" & "previous" buttons off the screen
+			if (next.getX() >= 0 || next.getY() >= 0)
+			{
+				next.setX(-next.getWidth());
+				next.setY(-next.getHeight());
+				next.updateBounds();
+			}
+			
+			if (previous.getX() >= 0 || previous.getY() >= 0)
+			{
+				previous.setX(-previous.getWidth());
+				previous.setY(-previous.getHeight());
+				previous.updateBounds();
+			}
+			
 			//draw description
 			canvas.drawText(getDescription(), getDescriptionX(), getDescriptionY(), paint);
 		}
