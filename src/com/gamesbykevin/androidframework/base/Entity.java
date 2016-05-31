@@ -5,6 +5,7 @@ import com.gamesbykevin.androidframework.resources.Disposable;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import java.util.UUID;
@@ -327,11 +328,22 @@ public class Entity extends Cell implements Disposable
      */
     public void render(final Canvas canvas) throws Exception
     {
+    	render(canvas, getSpritesheet().get().getImage(), null);
+    }
+    
+    /**
+     * Render the entity based on the current location in the current sprite sheet
+     * @param canvas Object we want to write our pixel data
+     * @param paint Object to assist rendering
+     * @throws Exception 
+     */
+    public void render(final Canvas canvas, final Paint paint) throws Exception
+    {
         if (getSpritesheet() != null)
         {
             if (getSpritesheet().get() != null)
             {
-                render(canvas, getSpritesheet().get().getImage());
+                render(canvas, getSpritesheet().get().getImage(), paint);
             }
             else
             {
@@ -352,12 +364,24 @@ public class Entity extends Cell implements Disposable
      */
     public void render(final Canvas canvas, final Bitmap image) throws Exception
     {
+    	render(canvas, image, null);
+   }
+    
+    /**
+     * Render the entity
+     * @param canvas Object we want to write our pixel data
+     * @param image The image we are rendering
+     * @param paint Object to assist rendering
+     * @throws Exception 
+     */
+    public void render(final Canvas canvas, final Bitmap image, final Paint paint) throws Exception
+    {
         if (getWidth() < 1)
             throw new Exception("width has to be at least 1 pixel");
         if (getHeight() < 1)
             throw new Exception("height has to be at least 1 pixel");
         
         //draw the provided image at the current location
-        canvas.drawBitmap(image, getSource(image), getDestination(), null);
+        canvas.drawBitmap(image, getSource(image), getDestination(), paint);
    }
 }
