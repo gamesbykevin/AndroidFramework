@@ -328,7 +328,7 @@ public class Entity extends Cell implements Disposable
      */
     public void render(final Canvas canvas) throws Exception
     {
-    	render(canvas, getSpritesheet().get().getImage(), null);
+    	this.render(canvas, getSpritesheet().get().getImage(), null);
     }
     
     /**
@@ -343,7 +343,7 @@ public class Entity extends Cell implements Disposable
         {
             if (getSpritesheet().get() != null)
             {
-                render(canvas, getSpritesheet().get().getImage(), paint);
+            	this.render(canvas, getSpritesheet().get().getImage(), paint);
             }
             else
             {
@@ -364,7 +364,7 @@ public class Entity extends Cell implements Disposable
      */
     public void render(final Canvas canvas, final Bitmap image) throws Exception
     {
-    	render(canvas, image, null);
+    	this.render(canvas, image, null);
    }
     
     /**

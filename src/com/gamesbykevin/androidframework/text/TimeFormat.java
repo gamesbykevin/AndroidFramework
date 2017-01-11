@@ -20,6 +20,10 @@ public class TimeFormat
 	 */
 	public static final String FORMAT_2 = "ss.SSS";
 	
+	/**
+	 * Time format mm:ss.S
+	 */
+	public static final String FORMAT_3 = "mm:ss.S";
 	
     /**
      * Our object used to format the time
